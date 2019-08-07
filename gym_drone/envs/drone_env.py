@@ -5,10 +5,7 @@ import numpy as np
 from gym import error, spaces, utils
 from gym.utils 
 
-def get_pred_cov(x):
-    # Return the predicted coverage of the environment
-    e = math.exp(1)
-    return (1.0 + e) / (1. + math.exp(x + 1))
+
 
 
 class DroneEnv(gym.Env):
@@ -27,9 +24,12 @@ class DroneEnv(gym.Env):
     self.y_max = 4
     
     
-    self.visited_entire_grid = False
+    # ???
     
-    self.grid_visit_count = 100
+    self.visited_entire_grid = False
+    self.current_episode = 0
+    self.current_timestep = 0
+    self.grid_visit_count = (self.x_max+1)*(self.y_max+1)   # 5^2 =25
     #self.
     
     # Observations are (in this order): current x-pos, current y-pos, terrain angle (from horizontal axis)
@@ -44,6 +44,9 @@ class DroneEnv(gym.Env):
                     self.y_max,  # y-pos
                     90]) # terrain_angle_deg
     self.observation_space = spaces.Box(low, high, dtype=np.float32)
+    
+    # Action space
+    self.action_space = 
 
     
   def step(self, action):
@@ -78,7 +81,35 @@ class DroneEnv(gym.Env):
     
     if self.visited_entire_grid:
         raise RuntimeError("Episode is done.") #end execution, and finish run
-    self.
+    self.grid_visit_count -= 1 # one less grid
+    self.current_timestep += 1
+    self._take_action(action)
+    reward = self._get_reward()
+    obs = self._get_state()
+    return obs, reward, self.is_banana_sold, {}
+
+    
+  def _exec_action(action):
+    
+    self.action_episode_memory[self.current_episode].append(action)
+    
+    
+
+    if not grid_visit_count:
+        self.visited_entire_grid = True
+
+            
+            
+  def _get_reward():
+    
+    
+  def _get_state():
+    
+    
+  def get_pred_cov(x):
+    # Return the predicted coverage of the environment
+    
+    
     
   def reset(self):
     t3 = 3
