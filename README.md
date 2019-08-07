@@ -10,12 +10,15 @@ Minimal install:
 
 Then install this package via
 
-pip install -e .
+pip install -e openai-gym
+
 Usage
+
 import gym
-import gym_banana
+import gym_drone
 
 env = gym.make('Drone-v0')
+
 See https://github.com/matthiasplappert/keras-rl/tree/master/examples for some examples.
 
 # The Environment
