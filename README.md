@@ -6,7 +6,7 @@ This repository contains a PIP package which is an OpenAI Gym environment for a 
 
 Minimal install:
 
-## Install OpenAI gym
+<b> Install OpenAI gym </b>
 
 Then install this package via
 
