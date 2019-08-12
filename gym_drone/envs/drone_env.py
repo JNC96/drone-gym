@@ -6,8 +6,6 @@ from gym import error, spaces, utils
 from gym.utils 
 
 
-
-
 class DroneEnv(gym.Env):
   metadata = {'render.modes': ['human']}
 
@@ -24,6 +22,8 @@ class DroneEnv(gym.Env):
     self.y_max = 4
     self.min_cam_angle = 0
     self.max_cam_angle = 90
+    self.min_terr_angle = 0
+    self.max_terr_angle = 90 #terrain angle - something that is observed
     self.min_speed = 1
     self.max_speed = 10 #max speed is actually 56 kmh (this is m/s)
     self.min_height = 1 #meter
@@ -31,7 +31,7 @@ class DroneEnv(gym.Env):
     
     
     # ???
-    
+    self.state = None
     self.visited_entire_grid = False
     self.current_episode = 0
     self.current_timestep = 0
@@ -39,7 +39,7 @@ class DroneEnv(gym.Env):
     #self.
     
     # Observations are (in this order): current x-pos, current y-pos, terrain angle (from horizontal axis)
-    # Let's assume that the map is of grid size 10x10. Position of the drone is represented as (grid x index,
+    # Let's assume that the map is of grid size 5x5. Position of the drone is represented as (grid x index,
     # grid y index), where (0,0) is the bottom left of the grid ((4,4) is max value)).
     
     # Here, low is the lower limit of observation range, and high is the higher limit.
@@ -54,11 +54,20 @@ class DroneEnv(gym.Env):
     # Action space
     low_action = np.array([self.min_cam_angle,  # cam angle in deg
                     self.min_speed,  # flight speed in m/s
-                    self.min_height]) # flight height in m
-    high_action = np.array([self.max_cam_angle,  # x-pos
+                    self.min_height,
+                          ]) # flight height in m
+    high_action = np.array([self.max_cam_angle,  # cam angle in deg
                     self.max_speed,  # flight speed in m/s
                     self.max_height]) # flight height in m
     self.action_space = spaces.Box(low_action, high_action, dtype=np.float32)
+    
+    # generate random terrain gradients/create them here
+    
+    self.terr_angle_grid = [0,0,0,0,0,
+                            0,0,0,0,0,
+                            30,30,30,30,30,
+                            15,15,15,15,15
+                           ]
 
     
   def step(self, action):
@@ -93,12 +102,15 @@ class DroneEnv(gym.Env):
     
     if self.visited_entire_grid:
         raise RuntimeError("Episode is done.") #end execution, and finish run
+        
+    
+        
     self.grid_visit_count -= 1 # one less grid
     self.current_timestep += 1
-    self._take_action(action)
+    self._exec_action(action)
     reward = self._get_reward()
     obs = self._get_state()
-    return obs, reward, self.is_banana_sold, {}
+    #return obs, reward
 
     
   def _exec_action(action):
@@ -111,21 +123,38 @@ class DroneEnv(gym.Env):
         self.visited_entire_grid = True
 
             
-            
+  def converter(index):
+    
+    # converts an index value to x-y coords
+    # see order of the grid above in __init__
+    
+    if (index<=self.x_max):
+      return 0, index
+    else:
+      return index//self.x_max+1, index%self.x_max+1
+  
   def _get_reward():
     
     
   def _get_state():
     
     
+    """Get the observation."""
+    ob = []
+    return ob
+    
   def get_pred_cov(x):
     # Return the predicted coverage of the environment
     
     
-    
   def reset(self):
-    t3 = 3
-  def render(self, mode='human'):
-    t4 = 4
+    # reset should always run at the end of an episode and before the first run.
+    self.state = np.array([0,
+                           0,
+                           
+    
+    
+  def _render(self, mode='human', close=False):
+        return
   def close(self):
-    t5 = 5
+   
