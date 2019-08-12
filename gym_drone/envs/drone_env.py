@@ -22,6 +22,12 @@ class DroneEnv(gym.Env):
     self.x_max = 4
     self.y_min = 0
     self.y_max = 4
+    self.min_cam_angle = 0
+    self.max_cam_angle = 90
+    self.min_speed = 1
+    self.max_speed = 10 #max speed is actually 56 kmh (this is m/s)
+    self.min_height = 1 #meter
+    self.max_height = 100 #meter
     
     
     # ???
@@ -37,16 +43,22 @@ class DroneEnv(gym.Env):
     # grid y index), where (0,0) is the bottom left of the grid ((4,4) is max value)).
     
     # Here, low is the lower limit of observation range, and high is the higher limit.
-    low = np.array([self.x_min,  # x-pos
+    low_ob = np.array([self.x_min,  # x-pos
                     self.y_min,  # y-pos
                     0]) # terrain_angle_deg
-    high = np.array([self.x_max,  # x-pos
+    high_ob = np.array([self.x_max,  # x-pos
                     self.y_max,  # y-pos
                     90]) # terrain_angle_deg
-    self.observation_space = spaces.Box(low, high, dtype=np.float32)
+    self.observation_space = spaces.Box(low_ob, high_ob, dtype=np.float32)
     
     # Action space
-    self.action_space = 
+    low_action = np.array([self.min_cam_angle,  # cam angle in deg
+                    self.min_speed,  # flight speed in m/s
+                    self.min_height]) # flight height in m
+    high_action = np.array([self.max_cam_angle,  # x-pos
+                    self.max_speed,  # flight speed in m/s
+                    self.max_height]) # flight height in m
+    self.action_space = spaces.Box(low_action, high_action, dtype=np.float32)
 
     
   def step(self, action):
