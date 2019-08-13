@@ -35,6 +35,7 @@ class DroneEnv(gym.Env):
     self.visited_entire_grid = False
     self.current_episode = 0
     self.current_timestep = 0
+    self.current_pos = [0,0]
     self.action_episode_memory = []
     self.max_timestep = 2*(self.x_max+1)*(self.y_max+1)   # Visits all grid squares twice.
     #self.
@@ -108,9 +109,11 @@ class DroneEnv(gym.Env):
     if self.visited_entire_grid:
         raise RuntimeError("Episode is done.") #end execution, and finish run
     self.current_timestep += 1
+    self.current_pos = self.index2coord(self.current_timestep)
+    self.state = self.current_pos + self.t
     self._take_action(action)
     reward = self._get_reward(action)
-    obs = self._get_state()
+    
     #return obs, reward
 
     
@@ -125,15 +128,15 @@ class DroneEnv(gym.Env):
         self.visited_entire_grid = True
 
             
-  def index2coord(index):
+  def index2coord(self, index):
     
     # converts an index value to x-y coords
     # see order of the grid above in __init__
     
     if (index<=self.x_max):
-      return 0, index
+      return [0, index]
     else:
-      return index//self.x_max+1, index%self.x_max+1
+      return [index//self.x_max+1, index%self.x_max+1]
     
   # def index2index(index):
     
@@ -151,11 +154,6 @@ class DroneEnv(gym.Env):
     gradient_delta_norm = 1 - gradient_delta/self.max_cam_angle # this will give us a normalised value that rewards less difference
     tmp_reward = gradient_delta_norm*
     
-  def _get_state():
-    
-    """Get the observation."""
-    ob = []
-    return ob
     
   def get_pred_cov(x):
     # Return the predicted coverage of the environment
