@@ -1,3 +1,18 @@
+"""
+$$$$$$
+To-do:
+$$$$$$
+
+- need to define reward signal
+
+- need to add a way to get user input
+
+- need to implement a method for the reward signal to select either low/high altitude to be a better thing. i.e. if
+the user wants to analyse low ground stuff, then should reward low altitude (and therefore penalise high altitude)
+
+"""
+
+
 import gym
 import seeding
 import math
@@ -32,7 +47,7 @@ class DroneEnv(gym.Env):
     
     # ???
     self.state = None #initiate state holder
-    self.visited_entire_grid = False
+    self.episode_over = False
     self.current_episode = 0
     self.current_timestep = 0
     self.current_pos = [0,0]
@@ -106,26 +121,22 @@ class DroneEnv(gym.Env):
                  use this for learning.
         """
     
-    if self.visited_entire_grid:
-        raise RuntimeError("Episode is done.") #end execution, and finish run
+    if self.episode_over:
+        raise RuntimeError("Episode is done. You're running step() despite this fact.") #end execution, and finish run
     self.current_timestep += 1
     self.current_pos = self.index2coord(self.current_timestep)
-    self.state = self.current_pos + self.t
-    self._take_action(action)
-    reward = self._get_reward(action)
-    
-    #return obs, reward
-
-    
-  def _take_action(self, action):
+    self.current_pos.append(self.terr_angle_grid[self.current_timestep-1])
+    self.state = list.copy(self.current_pos)
     
     self.action_episode_memory[self.current_episode].append(action)
-    
-    
-    
 
-    if not grid_visit_count:
-        self.visited_entire_grid = True
+    reward = self._get_reward(action)
+    
+    if self.current_timestep>=self.max_timestep:
+      self.episode_over = True
+      
+    return self.state, reward, self.episode_over, {}
+
 
             
   def index2coord(self, index):
@@ -137,10 +148,7 @@ class DroneEnv(gym.Env):
       return [0, index]
     else:
       return [index//self.x_max+1, index%self.x_max+1]
-    
-  # def index2index(index):
-    
-    
+
   
   def _get_reward(self, action):
     
@@ -150,21 +158,26 @@ class DroneEnv(gym.Env):
     speed_rf = 0.2
     height_rf = 0.3
     
-    gradient_delta = math.abs(self.terr_angle_grid[self.current_timestep%self.max_timestep] - action[1]) # action [1] is the camera angle
+    gradient_delta = math.abs(self.terr_angle_grid[self.current_timestep%self.max_timestep] - action[0]) # action [1] is the camera angle
     gradient_delta_norm = 1 - gradient_delta/self.max_cam_angle # this will give us a normalised value that rewards less difference
-    tmp_reward = gradient_delta_norm*
     
+    speed_norm = 1 - action[1]/self.max_speed # speed normalised, and reward less speed
     
-  def get_pred_cov(x):
-    # Return the predicted coverage of the environment
+    height_norm = action[2]/self.max_height # height normalised, and more height is better (FOR NOW)
+    
+    tmp_reward = gradient_delta_norm*gradient_delta_rf + speed_norm*speed_rf + height_norm*height_rf
+    
+    return tmp_reward
     
     
   def reset(self):
     # reset should always run at the end of an episode and before the first run.
     self.state = np.array([0,
                            0,
-                           
+                           0
+                          ])
     
+    return self.state
     
   def _render(self, mode='human', close=False):
         return
