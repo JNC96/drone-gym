@@ -31,16 +31,17 @@ class DroneEnv(gym.Env):
     
     
     # ???
-    self.state = None
+    self.state = None #initiate state holder
     self.visited_entire_grid = False
     self.current_episode = 0
     self.current_timestep = 0
-    self.grid_visit_count = (self.x_max+1)*(self.y_max+1)   # 5^2 =25
+    self.action_episode_memory = []
+    self.max_timestep = 2*(self.x_max+1)*(self.y_max+1)   # Visits all grid squares twice.
     #self.
     
     # Observations are (in this order): current x-pos, current y-pos, terrain angle (from horizontal axis)
     # Let's assume that the map is of grid size 5x5. Position of the drone is represented as (grid x index,
-    # grid y index), where (0,0) is the bottom left of the grid ((4,4) is max value)).
+    # grid y index), where (0,0) is the top left of the grid ((4,4) is max value)).
     
     # Here, low is the lower limit of observation range, and high is the higher limit.
     low_ob = np.array([self.x_min,  # x-pos
@@ -54,19 +55,23 @@ class DroneEnv(gym.Env):
     # Action space
     low_action = np.array([self.min_cam_angle,  # cam angle in deg
                     self.min_speed,  # flight speed in m/s
-                    self.min_height,
-                          ]) # flight height in m
+                    self.min_height]) # flight height in m
     high_action = np.array([self.max_cam_angle,  # cam angle in deg
                     self.max_speed,  # flight speed in m/s
                     self.max_height]) # flight height in m
     self.action_space = spaces.Box(low_action, high_action, dtype=np.float32)
     
     # generate random terrain gradients/create them here
+    # import random
+    # list  = [111,222,333,444,555]
+    # print("random.choice() to select random item from list - ", random.choice(list))
+
     
     self.terr_angle_grid = [0,0,0,0,0,
                             0,0,0,0,0,
                             30,30,30,30,30,
-                            15,15,15,15,15
+                            15,15,15,15,15,
+                            0,0,0,0,0
                            ]
 
     
@@ -102,20 +107,17 @@ class DroneEnv(gym.Env):
     
     if self.visited_entire_grid:
         raise RuntimeError("Episode is done.") #end execution, and finish run
-        
-    
-        
-    self.grid_visit_count -= 1 # one less grid
     self.current_timestep += 1
-    self._exec_action(action)
-    reward = self._get_reward()
+    self._take_action(action)
+    reward = self._get_reward(action)
     obs = self._get_state()
     #return obs, reward
 
     
-  def _exec_action(action):
+  def _take_action(self, action):
     
     self.action_episode_memory[self.current_episode].append(action)
+    
     
     
 
@@ -123,7 +125,7 @@ class DroneEnv(gym.Env):
         self.visited_entire_grid = True
 
             
-  def converter(index):
+  def index2coord(index):
     
     # converts an index value to x-y coords
     # see order of the grid above in __init__
@@ -132,12 +134,24 @@ class DroneEnv(gym.Env):
       return 0, index
     else:
       return index//self.x_max+1, index%self.x_max+1
-  
-  def _get_reward():
     
+  # def index2index(index):
+    
+    
+  
+  def _get_reward(self, action):
+    
+    # reward factors
+    
+    gradient_delta_rf = 0.5
+    speed_rf = 0.2
+    height_rf = 0.3
+    
+    gradient_delta = math.abs(self.terr_angle_grid[self.current_timestep%self.max_timestep] - action[1]) # action [1] is the camera angle
+    gradient_delta_norm = 1 - gradient_delta/self.max_cam_angle # this will give us a normalised value that rewards less difference
+    tmp_reward = gradient_delta_norm*
     
   def _get_state():
-    
     
     """Get the observation."""
     ob = []
