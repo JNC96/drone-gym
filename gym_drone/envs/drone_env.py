@@ -180,6 +180,6 @@ class DroneEnv(gym.Env):
     return self.state
     
   def _render(self, mode='human', close=False):
-        return
+    return 0
   def close(self):
-   
+    return 0
