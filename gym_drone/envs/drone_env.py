@@ -18,7 +18,7 @@ import seeding
 import math
 import numpy as np
 from gym import error, spaces, utils
-from gym.utils 
+from gym.utils import seeding
 
 
 class DroneEnv(gym.Env):
