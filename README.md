@@ -1,4 +1,4 @@
-# Drone GyM
+# Drone Gym Environment
 
 This repository contains a PIP package which is an OpenAI Gym environment for a drone that learns via RL.
 
