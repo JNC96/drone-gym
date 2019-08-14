@@ -13,8 +13,8 @@ Then, make the environment:
 	import gym
 	import gym_pull
     
-    	gym_pull.pull('github.com/jnc96/drone-gym')
-    	env = gym.make('Drone-v0')
+    gym_pull.pull('github.com/jnc96/drone-gym')
+    env = gym.make('Drone-v0')
 
 <div id="basic_usage"></div>
 
