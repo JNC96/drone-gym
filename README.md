@@ -6,13 +6,7 @@ This repository contains a PIP package which is an OpenAI Gym environment for a 
 
   <b> Install OpenAI gym </b>
 
-Then install this package via
-
-.. code:: python
-
-  pip install -e .
-
-<div id="pip_install"></div>
+Then install this package via ``pip install -e .``
 
 Then, make the environment:
 
