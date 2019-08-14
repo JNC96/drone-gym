@@ -14,7 +14,7 @@
 [python-version]: https://img.shields.io/pypi/pyversions/gym-super-mario-bros.svg
 [python-home]: https://python.org
 
-![gif](https://media.giphy.com/media/11ASZtb7vdJagM/giphy.gif)
+![gif](https://media.giphy.com/media/h5NXof7XfEYHm/giphy.gif)
 
 # Drone Gym Environment
 
