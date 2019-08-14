@@ -14,6 +14,8 @@
 [python-version]: https://img.shields.io/pypi/pyversions/gym-super-mario-bros.svg
 [python-home]: https://python.org
 
+![gif](https://media.giphy.com/media/11ASZtb7vdJagM/giphy.gif)
+
 # Drone Gym Environment
 
 This repository contains a PIP package which is an OpenAI Gym environment for a drone that learns via RL.
