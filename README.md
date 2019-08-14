@@ -4,20 +4,27 @@ This repository contains a PIP package which is an OpenAI Gym environment for a 
 
 # Installation
 
-Minimal install:
-
-<b> Install OpenAI gym </b>
+  <b> Install OpenAI gym </b>
 
 Then install this package via
 
-pip install -e openai-gym
+.. code:: python
 
-Usage
+  pip install -e .
 
-import gym
-import gym_drone
+<div id="pip_install"></div>
 
-env = gym.make('Drone-v0')
+Then, make the environment:
+
+.. code:: python
+
+	  import gym
+	  import gym_pull
+    
+    gym_pull.pull('github.com/jnc96/drone-gym')
+    env = gym.make('Drone-v0')
+
+<div id="basic_usage"></div>
 
 See https://github.com/matthiasplappert/keras-rl/tree/master/examples for some examples.
 
