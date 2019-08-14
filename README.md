@@ -10,8 +10,6 @@ Then install this package via ``pip install -e .``
 
 Then, make the environment:
 
-.. code:: python
-
 	  import gym
 	  import gym_pull
     
