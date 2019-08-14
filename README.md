@@ -1,3 +1,9 @@
+[![BuildStatus][build-status]][ci-server]
+[![PackageVersion][pypi-version]][pypi-home]
+[![PythonVersion][python-version]][python-home]
+[![Stable][pypi-status]][pypi-home]
+[![Format][pypi-format]][pypi-home]
+
 # Drone Gym Environment
 
 This repository contains a PIP package which is an OpenAI Gym environment for a drone that learns via RL.
