@@ -127,6 +127,7 @@ class DroneEnv(gym.Env):
     self.current_pos.append(self.terr_angle_grid[self.current_timestep-1])
     self.state = list.copy(self.current_pos)
     
+    print(self.current_episode)
     self.action_episode_memory[self.current_episode].append(action)
 
     reward = self._get_reward(action)
