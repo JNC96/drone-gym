@@ -14,7 +14,6 @@ the user wants to analyse low ground stuff, then should reward low altitude (and
 
 
 import gym
-import seeding
 import math
 import numpy as np
 from gym import error, spaces, utils
