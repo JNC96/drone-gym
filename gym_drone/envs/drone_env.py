@@ -178,7 +178,7 @@ class DroneEnv(gym.Env):
                            0,
                            0
                           ])
-    
+    self.action_episode_memory.append([])
     return self.state
     
   def _render(self, mode='human', close=False):
