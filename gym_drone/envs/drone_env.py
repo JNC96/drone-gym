@@ -129,6 +129,7 @@ class DroneEnv(gym.Env):
     self.state = list.copy(self.current_pos)
     
     print(self.current_episode)
+    logging.info(self.current_episode)
     self.action_episode_memory[self.current_episode].append(action)
 
     reward = self._get_reward(action)
