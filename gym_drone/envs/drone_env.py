@@ -161,7 +161,7 @@ class DroneEnv(gym.Env):
     height_rf = 0.3
     
     logging.warning("the current timestep.  ="+str(self.current_timestep))
-    logging.warning("self.current_timestep%self.max_timestep  =  "+ str(self.current_timestep%self.max_timestep))
+    logging.warning("self.current_timestep%self.grid_step_max  =  "+ str(self.current_timestep%self.grid_step_max))
     gradient_delta = abs(self.terr_angle_grid[self.current_timestep%self.max_timestep] - action[0]) # action [1] is the camera angle
     gradient_delta_norm = 1 - gradient_delta/self.max_cam_angle # this will give us a normalised value that rewards less difference
     
