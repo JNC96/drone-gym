@@ -48,8 +48,8 @@ class DroneEnv(gym.Env):
     # ???
     self.state = None #initiate state holder
     self.episode_over = False
-    self.current_episode = 0
-    self.current_timestep = 0
+    self.current_episode = -1 
+    self.current_timestep = -1 # -1 because timestep increments before action
     self.current_pos = [0,0]
     self.action_episode_memory = []
     self.max_timestep = 2*(self.x_max+1)*(self.y_max+1)   # Visits all grid squares twice.
@@ -178,7 +178,10 @@ class DroneEnv(gym.Env):
                            0,
                            0
                           ])
+    self.current_timestep = -1
+    self.current_episode += 1
     self.action_episode_memory.append([])
+    
     return self.state
     
   def _render(self, mode='human', close=False):
