@@ -126,7 +126,7 @@ class DroneEnv(gym.Env):
         raise RuntimeError("Episode is done. You're running step() despite this fact.") #end execution, and finish run
     self.current_timestep += 1
     self.current_pos = self.index2coord(self.current_timestep)
-    self.current_pos.append(self.terr_angle_grid[self.current_timestep-1])
+    self.current_pos.append(self.terr_angle_grid[self.current_timestep%self.grid_step_max])
     self.state = list.copy(self.current_pos)
     
     logging.warning("The current episode is "+ str(self.current_episode))
