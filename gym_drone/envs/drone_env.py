@@ -134,7 +134,7 @@ class DroneEnv(gym.Env):
 
     reward = self._get_reward(action)
     
-    if self.current_timestep>=self.max_timestep:
+    if self.current_timestep>self.max_timestep:
       self.episode_over = True
       
     return self.state, reward, self.episode_over, {}
