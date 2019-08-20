@@ -52,7 +52,8 @@ class DroneEnv(gym.Env):
     self.current_timestep = -1 # -1 because timestep increments before action
     self.current_pos = [0,0]
     self.action_episode_memory = []
-    self.max_timestep = 2*(self.x_max+1)*(self.y_max+1) - 1   # Visits all grid squares twice.
+    self.grid_step_max = (self.x_max+1)*(self.y_max+1) - 1 # number of grid squares
+    self.max_timestep = 2*self.grid_step_max   # Visits all grid squares twice.
     #self.
     
     # Observations are (in this order): current x-pos, current y-pos, terrain angle (from horizontal axis)
