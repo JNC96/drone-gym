@@ -128,7 +128,7 @@ class DroneEnv(gym.Env):
     self.current_pos.append(self.terr_angle_grid[self.current_timestep-1])
     self.state = list.copy(self.current_pos)
     
-    logging.warning("The current episode is ", self.current_episode)
+    logging.warning("The current episode is "+ str(self.current_episode))
     self.action_episode_memory[self.current_episode].append(action)
 
     reward = self._get_reward(action)
@@ -159,7 +159,7 @@ class DroneEnv(gym.Env):
     speed_rf = 0.2
     height_rf = 0.3
     
-    logging.warning("self.current_timestep%self.max_timestep  =  ", self.current_timestep%self.max_timestep)
+    logging.warning("self.current_timestep%self.max_timestep  =  "+ str(self.current_timestep%self.max_timestep))
     gradient_delta = abs(self.terr_angle_grid[self.current_timestep%self.max_timestep] - action[0]) # action [1] is the camera angle
     gradient_delta_norm = 1 - gradient_delta/self.max_cam_angle # this will give us a normalised value that rewards less difference
     
