@@ -160,7 +160,7 @@ class DroneEnv(gym.Env):
     speed_rf = 0.2
     height_rf = 0.3
     
-    gradient_delta = math.abs(self.terr_angle_grid[self.current_timestep%self.max_timestep] - action[0]) # action [1] is the camera angle
+    gradient_delta = abs(self.terr_angle_grid[self.current_timestep%self.max_timestep] - action[0]) # action [1] is the camera angle
     gradient_delta_norm = 1 - gradient_delta/self.max_cam_angle # this will give us a normalised value that rewards less difference
     
     speed_norm = 1 - action[1]/self.max_speed # speed normalised, and reward less speed
