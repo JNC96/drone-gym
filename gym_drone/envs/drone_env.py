@@ -128,7 +128,6 @@ class DroneEnv(gym.Env):
     self.current_pos = self.index2coord(self.current_timestep)
     self.current_pos.append(self.terr_angle_grid[self.current_timestep%self.grid_step_max])
     self.state = list.copy(self.current_pos)
-    self.state.append(self.current_timestep);
     
     logging.warning("The current episode is "+ str(self.current_episode))
     self.action_episode_memory[self.current_episode].append(action)
