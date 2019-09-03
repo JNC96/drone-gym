@@ -151,7 +151,7 @@ class DroneEnv(gym.Env):
     if (index<=self.x_max):
       return [0, index]
     else:
-      return [index//self.x_max, index%self.x_max]
+      return [index//(self.x_max+1), index%(self.x_max+1)]
 
   
   def _get_reward(self, action):
