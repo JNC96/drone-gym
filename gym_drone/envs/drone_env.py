@@ -150,8 +150,11 @@ class DroneEnv(gym.Env):
     
     if (index<=self.x_max):
       return [0, index]
-    else:
-      return [index//(self.x_max+1), index%(self.x_max+1)]
+    else:        
+      return [(index%(self.grid_step_max+1))//(self.x_max+1), index%(self.x_max+1)]
+          
+      # grid step max is n*m (grid dimensions) -1
+    
 
   
   def _get_reward(self, action):
