@@ -21,6 +21,7 @@ from gym import error, spaces, utils
 from gym.utils import seeding
 
 
+
 class DroneEnv(gym.Env):
   metadata = {'render.modes': ['human']}
 
@@ -85,9 +86,9 @@ class DroneEnv(gym.Env):
 
     
     self.terr_angle_grid = [0,0,0,0,0,
-                            0,0,0,0,0,
                             30,30,30,30,30,
-                            15,15,15,15,15,
+                            70,70,70,70,70,
+                            45,45,45,45,45,
                             0,0,0,0,0
                            ]
 
@@ -108,7 +109,7 @@ class DroneEnv(gym.Env):
             reward (float) :
                 amount of reward achieved by the previous action. The scale
                 varies between environments, but the goal is always to increase
-                your total reward.
+                your total reward. (This reward per step is normalised to 1.)
             episode_over (bool) :
                 whether it's time to reset the environment again. Most (but not
                 all) tasks are divided up into well-defined episodes, and done
@@ -129,7 +130,7 @@ class DroneEnv(gym.Env):
     self.current_pos.append(self.terr_angle_grid[self.current_timestep%self.grid_step_max])
     self.state = list.copy(self.current_pos)
     
-    logging.warning("The current episode is "+ str(self.current_episode))
+    #logging.debug("The current episode is "+ str(self.current_episode))
     self.action_episode_memory[self.current_episode].append(action)
     
     
@@ -165,8 +166,8 @@ class DroneEnv(gym.Env):
     speed_rf = 0.2
     height_rf = 0.3
     
-    logging.warning("the current timestep.  ="+str(self.current_timestep))
-    logging.warning("self.current_timestep%self.grid_step_max  =  "+ str(self.current_timestep%self.grid_step_max))
+    #logging.warning("the current timestep.  ="+str(self.current_timestep))
+    #logging.warning("self.current_timestep%self.grid_step_max  =  "+ str(self.current_timestep%self.grid_step_max))
 
     gradient_delta = abs(self.terr_angle_grid[(self.current_timestep%self.grid_step_max)] - action['cam_angle']) # action [1] is the camera angle
     gradient_delta_norm = 1 - gradient_delta/self.max_cam_angle # this will give us a normalised value that rewards less difference
