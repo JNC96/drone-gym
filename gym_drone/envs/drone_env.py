@@ -99,8 +99,8 @@ class DroneEnv(gym.Env):
         The agent (drone) takes a step (flies somewhere) in the environment.
         Parameters
         ----------
-        action : (float32,float32) - the coordinates
-        Returns
+        action : (int,int) - the coordinates, (int) - the terrain gradient
+        Returns: (int) - terrain angle (observation), (float32) reward, (bool) episode_over, (int,int) - coords
         -------
         ob, reward, episode_over, info : tuple
             ob (object) :
