@@ -62,7 +62,7 @@ class DroneEnv(gym.Env):
     high_action = np.array([self.max_cam_angle,  # cam angle in deg
                     self.max_speed,  # flight speed in m/s
                     self.max_height]) # flight height in m
-    self.action_space = spaces.Box(low_action, high_action, dtype=np.int32)
+    self.action_space = spaces.MultiDiscrete([self.min_cam_angle, self.max_cam_angle], [self.min_speed, self.max_speed], [self.min_height, self.max_height] dtype=np.int32)
     
     # generate random terrain gradients/create them here
     # import random
