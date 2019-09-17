@@ -1,17 +1,3 @@
-"""
-$$$$$$
-To-do:
-$$$$$$
-
-- need to define reward signal
-
-- need to add a way to get user input
-
-- need to implement a method for the reward signal to select either low/high altitude to be a better thing. i.e. if
-the user wants to analyse low ground stuff, then should reward low altitude (and therefore penalise high altitude)
-
-"""
-
 
 import gym
 import logging
@@ -28,21 +14,21 @@ class DroneEnv(gym.Env):
     
     # debug vars
     
-    self.__version__ = "1.2.0"
+    self.__version__ = "1.3.0"
     
     # Hyperparameter definition 
-    self.x_min = 0
-    self.x_max = 4
-    self.y_min = 0
-    self.y_max = 4
-    self.min_cam_angle = 0
-    self.max_cam_angle = 2
-    self.min_terr_angle = 0
-    self.max_terr_angle = 2 #terrain angle - something that is observed
-    self.min_speed = 1
-    self.max_speed = 3 #max speed is actually 56 kmh (this is m/s)
-    self.min_height = 1 #meter
-    self.max_height = 3 #meter
+    self.x_min = int(0)
+    self.x_max = int(4)
+    self.y_min = int(0)
+    self.y_max = int(4)
+    self.min_cam_angle = int(0)
+    self.max_cam_angle = int(2)
+    self.min_terr_angle = int(0)
+    self.max_terr_angle = int(2) #terrain angle - something that is observed
+    self.min_speed = int(1)
+    self.max_speed = int(3) #max speed is actually 56 kmh (this is m/s)
+    self.min_height = int(1) #meter
+    self.max_height = int(3) #meter
     
     
     # ???
@@ -130,9 +116,10 @@ class DroneEnv(gym.Env):
     reward = self._get_reward(action)
 
     # Take a step, and observe environment.
-    self.current_timestep += 1    
-    self.info = self._get_info()
-    self.state = self._get_state()
+    self.current_timestep += 1
+    self.current_pos = self.index2coord(self.current_timestep)
+    self.current_pos.append(self.terr_angle_grid[self.current_timestep%self.grid_step_max])
+    self.state = list.copy(self.current_pos)
     
     if self.current_timestep>=self.max_timestep:
       self.episode_over = True
@@ -191,7 +178,10 @@ class DroneEnv(gym.Env):
     self.current_episode += 1
     self.action_episode_memory.append([])
     self.episode_over = False
-    self.state = self._get_state()
+    
+    self.current_pos = self.index2coord(self.current_timestep)
+    self.current_pos.append(self.terr_angle_grid[self.current_timestep%self.grid_step_max])
+    self.state = list.copy(self.current_pos)
     
     return self.state
     
