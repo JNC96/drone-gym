@@ -56,10 +56,10 @@ class DroneEnv(gym.Env):
     self.observation_space = spaces.Box(low_ob, high_ob, dtype=np.float32)
     
     # Action space
-    low_action = np.array([self.min_cam_angle,  # cam angle in deg
+    #low_action = np.array([self.min_cam_angle,  # cam angle in deg
                     self.min_speed,  # flight speed in m/s
                     self.min_height]) # flight height in m
-    high_action = np.array([self.max_cam_angle,  # cam angle in deg
+    #high_action = np.array([self.max_cam_angle,  # cam angle in deg
                     self.max_speed,  # flight speed in m/s
                     self.max_height]) # flight height in m
     self.action_space = spaces.MultiDiscrete([self.min_cam_angle, self.max_cam_angle], [self.min_speed, self.max_speed], [self.min_height, self.max_height] dtype=np.int32)
