@@ -14,17 +14,17 @@ class DroneEnv(gym.Env):
     
     # debug vars
     
-    self.__version__ = "1.3.0"
+    self.__version__ = "2.0.0"
     
     # Hyperparameter definition 
     self.x_min = int(0)
     self.x_max = int(4)
     self.y_min = int(0)
     self.y_max = int(4)
-    self.min_cam_angle = int(0)
-    self.max_cam_angle = int(2)
-    self.min_terr_angle = int(0)
-    self.max_terr_angle = int(2) #terrain angle - something that is observed
+    self.min_cam_angle = int(1)
+    self.max_cam_angle = int(3)
+    self.min_terr_angle = int(1)
+    self.max_terr_angle = int(3) #terrain angle - something that is observed
     self.min_speed = int(1)
     self.max_speed = int(3) #max speed is actually 56 kmh (this is m/s)
     self.min_height = int(1) #meter
@@ -117,6 +117,7 @@ class DroneEnv(gym.Env):
 
     # Take a step, and observe environment.
     self.current_timestep += 1
+    self.hello = input()
     self.current_pos = self.index2coord(self.current_timestep)
     self.current_pos.append(self.terr_angle_grid[self.current_timestep%self.grid_step_max])
     self.state = list.copy(self.current_pos)
