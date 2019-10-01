@@ -148,29 +148,6 @@ class DroneIntEnv(gym.Env):
     
     return self.index2coord(self.current_timestep)
   
-  def get_user_reward(self, action, state):
-
-    #init variables.
-    uinput_reward = None
-    
-    print("Given that the:\n\n")
-    print("Slope is"+str(state[2])+".\n")
-    print("@("+str(state[0])+","+str(state[1])+")\n\n")
-
-    print("Agent takes actions:\n\n")
-    print("Camera Angle: "+str(action[0])+"\n")
-    print("Speed: "+str(action[1])+"\n")
-    print("Height: "+str(action[2])+"\n\n")
-
-    print("This returns a predicted coverage of:")
-    print(_get_reward(action))
-    print("\n\n")
-                         
-    uinput_reward = input("How would you rate the most recent action?")
-    
-        
-    return uinput_reward
-
   def _get_reward(self,action):
 
      # reward factors
@@ -193,7 +170,27 @@ class DroneIntEnv(gym.Env):
     tmp_reward = gradient_delta_norm*gradient_delta_rf + speed_norm*speed_rf + height_norm*height_rf
     
     return tmp_reward
+  
+  def get_user_reward(self, action, state):
+
+    #init variables.
+    uinput_reward = None
     
+    print("Given that the:\n\n")
+    print("Slope is"+str(state[2])+".\n")
+    print("@("+str(state[0])+","+str(state[1])+")\n\n")
+
+    print("Agent takes actions:\n\n")
+    print("Camera Angle: "+str(action[0])+"\n")
+    print("Speed: "+str(action[1])+"\n")
+    print("Height: "+str(action[2])+"\n\n")
+
+    print("This returns a predicted coverage of:")
+    tmp = _get_reward(action)
+    print("\n\n")
+                         
+    uinput_reward = input("How would you rate the most recent action?")
+    return uinput_reward
     
   def reset(self):
     # reset should always run at the end of an episode and before the first run.
