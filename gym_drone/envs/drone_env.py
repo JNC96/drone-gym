@@ -1,4 +1,3 @@
-
 import gym
 import logging
 import math
@@ -117,7 +116,6 @@ class DroneEnv(gym.Env):
 
     # Take a step, and observe environment.
     self.current_timestep += 1
-    self.hello = input()
     self.current_pos = self.index2coord(self.current_timestep)
     self.current_pos.append(self.terr_angle_grid[self.current_timestep%self.grid_step_max])
     self.state = list.copy(self.current_pos)
