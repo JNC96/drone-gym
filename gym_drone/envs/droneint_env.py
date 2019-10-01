@@ -154,15 +154,17 @@ class DroneIntEnv(gym.Env):
     uinput_reward = None
     
     print("Given that the:\n\n")
-    print("Slope is"+state[2]+".\n")
-    print("@("+state[0]+","+state[1]+")\n\n")
+    print("Slope is"+str(state[2])+".\n")
+    print("@("+str(state[0])+","+str(state[1])+")\n\n")
 
     print("Agent takes actions:\n\n")
-    print("Camera Angle: "+action[0]+"\n")
-    print("Speed: "+action[1]+"\n")
-    print("Height: "+action[2]+"\n\n")
+    print("Camera Angle: "+str(action[0])+"\n")
+    print("Speed: "+str(action[1])+"\n")
+    print("Height: "+str(action[2])+"\n\n")
 
-    print("This returns a predicted coverage of:"+_get_reward(action)+"\n\n")
+    print("This returns a predicted coverage of:")
+    print(_get_reward(action))
+    print("\n\n")
                          
     uinput_reward = input("How would you rate the most recent action?")
     
