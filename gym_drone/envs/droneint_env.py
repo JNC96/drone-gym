@@ -13,7 +13,7 @@ class DroneIntEnv(gym.Env):
     
     # debug vars
     
-    self.__version__ = "2.0.0"
+    self.__version__ = "1.0.0"
     
     # Hyperparameter definition 
     self.x_min = int(0)
@@ -119,7 +119,7 @@ class DroneIntEnv(gym.Env):
     self.current_pos.append(self.terr_angle_grid[self.current_timestep%self.grid_step_max])
     self.state = list.copy(self.current_pos)
 
-    reward = self._get_reward(action,self.state)                         
+    reward = self.get_user_reward(action,self.state)                         
     
     if self.current_timestep>=self.max_timestep:
       self.episode_over = True
