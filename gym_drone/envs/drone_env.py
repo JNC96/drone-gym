@@ -13,7 +13,7 @@ class DroneEnv(gym.Env):
     
     # debug vars
     
-    self.__version__ = "2.0.0"
+    self.__version__ = "2.1.1"
     
     # Hyperparameter definition 
     self.x_min = int(0)
