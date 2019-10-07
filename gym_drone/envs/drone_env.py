@@ -22,8 +22,8 @@ class DroneEnv(gym.Env):
     self.y_max = int(4)
     self.min_cam_angle = int(1)
     self.max_cam_angle = int(3)
-    self.min_terr_angle = int(1)
-    self.max_terr_angle = int(3) #terrain angle - something that is observed
+    self.min_terr_angle = int(0)
+    self.max_terr_angle = int(4) #terrain angle - something that is observed
     self.min_speed = int(1)
     self.max_speed = int(3) #max speed is actually 56 kmh (this is m/s)
     self.min_height = int(1) #meter
@@ -48,10 +48,10 @@ class DroneEnv(gym.Env):
     # Here, low is the lower limit of observation range, and high is the higher limit.
     low_ob = np.array([self.x_min,  # x-pos
                     self.y_min,  # y-pos
-                    self.min_cam_angle]) # terrain_angle_deg
+                    self.min_terr_angle]) # terrain_angle_deg
     high_ob = np.array([self.x_max,  # x-pos
                     self.y_max,  # y-pos
-                    self.max_cam_angle]) # terrain_angle_deg
+                    self.max_terr_angle]) # terrain_angle_deg
     self.observation_space = spaces.Box(low_ob, high_ob, dtype=np.float32)
     
     # Action space
@@ -120,7 +120,7 @@ class DroneEnv(gym.Env):
     self.current_pos.append(self.terr_angle_grid[self.current_timestep%self.grid_step_max])
     self.state = list.copy(self.current_pos)
     
-    if self.current_timestep>=self.max_timestep:
+    if self.current_timestep>=50:
       self.episode_over = True
       
     return self.state, reward, self.episode_over, {}
@@ -150,21 +150,22 @@ class DroneEnv(gym.Env):
   def _get_reward(self, action):
     
     # reward factors
+    # calculatinng the normalised rewards needs -1 because the max values is actually the number of actions, and actions start from 0.
     
-    gradient_delta_rf = 0.3
-    speed_rf = 0.35
-    height_rf = 0.35
+    gradient_delta_rf = 0.4
+    speed_rf = 0.3
+    height_rf = 0.3
     
     #logging.warning("the current timestep.  ="+str(self.current_timestep))
     #logging.warning("self.current_timestep%self.grid_step_max  =  "+ str(self.current_timestep%self.grid_step_max))
 
     gradient_delta = abs(self.terr_angle_grid[(self.current_timestep%self.grid_step_max)] - action[0]) # action [1] is the camera angle
 
-    gradient_delta_norm = 1 - gradient_delta/self.max_cam_angle # this will give us a normalised value that rewards less difference
+    gradient_delta_norm = 1 - gradient_delta/(self.max_cam_angle-1) # this will give us a normalised value that rewards less difference
     
-    speed_norm = 1 - action[1]/self.max_speed # speed normalised, and reward less speed
+    speed_norm = 1 - action[1]/(self.max_speed-1) # speed normalised, and reward less speed
     
-    height_norm = action[2]/self.max_height # height normalised, and more height is better (FOR NOW)
+    height_norm = action[2]/(self.max_height-1) # height normalised, and more height is better (FOR NOW)
     
     tmp_reward = gradient_delta_norm*gradient_delta_rf + speed_norm*speed_rf + height_norm*height_rf
     
