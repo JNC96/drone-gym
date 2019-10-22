@@ -52,3 +52,4 @@ The environment leverages the framework as defined by OpenAI Gym to create a cus
 
 Main purpose of this entire system is to investigate how human interaction can affect the traditional reinforcement learning framework. Custom scripts were written to facilitate this, and several TensorForce scripts were modified as well. These can be found in the custom scripts folder, which need to be manually extracted and placed in the TensorForce package directory.
 
+Created by Jia Ning Choo 2019 (https://github.com/jnc96).
